@@ -37,7 +37,7 @@
 
 
     <div class="formDiv" >
-        <form action="/insertEvent" method="POST" class="formStyleIn">
+        <form action="/insertEvent" method="POST" name="myForm" class="formStyleIn" onsubmit="return validateForm()">
             <input type="text" name="eventName" id="eventName" placeholder="eventName" class="inputFieldStyle" >
             <select name="elements" id="elements" class="inputFieldStyle">
             {% for eventType in data %}
@@ -56,6 +56,18 @@
     var cordY = document.getElementById("cordY");
     cordX.value = localStorage.getItem("x");
     cordY.value = localStorage.getItem("y");
+
+    function validateForm() {
+      var eventName = document.forms["myForm"]["eventName"].value;
+      var description = document.forms["myForm"]["description"].value;
+      var cordX = document.forms["myForm"]["cordX"].value;
+      var cordY = document.forms["myForm"]["cordY"].value;
+
+      if (eventName == "" || description == "" || cordY=="" || cordX=="") {
+        alert("you need to fill all the fields");
+        return false;
+      }
+    }
 </script>
 
 </body>

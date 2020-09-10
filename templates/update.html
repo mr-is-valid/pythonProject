@@ -37,7 +37,7 @@
 
 
     <div class="formDiv" >
-        <form action='/updateEvent/{{dataItem["id"]}}' method="POST" class="formStyleIn">
+        <form action='/updateEvent/{{dataItem["id"]}}' name="myForm" method="POST" class="formStyleIn" onsubmit="return validateForm()">
             <input type="text" name="eventName" id="eventName" value='{{dataItem["name"]}}' class="inputFieldStyle" >
             <select name="elements" id="elements" class="inputFieldStyle">
                 <option value='{{dataItem["typeID"]}}' selected="selected">{{dataItem["type"]}}</option>
@@ -51,6 +51,21 @@
             <input class="btn btn-success" type="submit" value="update item" style="width: 5vw;" class="inputFieldStyle">
         </form>
     </div>
+
+
+<script>
+   function validateForm() {
+      var eventName = document.forms["myForm"]["eventName"].value;
+      var description = document.forms["myForm"]["description"].value;
+      var cordX = document.forms["myForm"]["cordX"].value;
+      var cordY = document.forms["myForm"]["cordY"].value;
+
+      if (eventName == "" || description == "" || cordY=="" || cordX=="") {
+        alert("you need to fill all the fields");
+        return false;
+      }
+   }
+</script>
 
 </body>
 </html>
