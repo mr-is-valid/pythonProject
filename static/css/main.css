@@ -1,0 +1,110 @@
+body{
+margin: 0;
+font-family: sans-serif;
+padding: 0;
+}
+
+p{
+color: white;
+ font-weight: bold;
+ font-size: x-large;
+}
+
+.navbarStyle{
+height: 6vh;
+ width: 100%;
+ display: flex;
+ flex-direction: row;
+ justify-content: space-between;
+}
+
+.formDiv{
+justify-content: center;
+display: flex;
+width: auto;
+height: auto;
+}
+
+.formStyleIn{
+display: flex;
+flex-direction: column;
+margin: 3%;
+width: auto;
+height: auto;
+align-items: center;
+}
+
+.inputFieldStyle{
+width: 20vw;
+margin: 3%;
+}
+
+.tableView{
+    margin: 3%;
+    align-items: center;
+    text-align: center;
+    align-content: center;
+    height: auto;
+    display: flex;
+    flex-direction: column;"
+}
+
+#map{
+width: 800px;
+ height: 600px;
+ top: 0;
+ bottom: 0;
+  width: 100%;
+}
+
+.wrraper{
+display: flex;
+flex-direction: column;
+}
+
+.displayData{
+    display: flex;
+    flex-direction: row;
+    margin-top: 3%;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.marker {
+display: block;
+border: none;
+border-radius: 50%;
+cursor: pointer;
+padding: 0;
+}
+
+.navbarStyle{
+    height: 6vh;
+    width: 100%;
+}
+
+.addBtn{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1%;
+}
+
+
+
+
+
+
+.eleInfo {
+  position: absolute;
+  font-family: sans-serif;
+  margin-top: 5px;
+  margin-left: 5px;
+  padding: 5px;
+  width: 200px;
+  border: 2px solid black;
+  font-size: 20px;
+  color: #222;
+  background-color: #fff;
+}

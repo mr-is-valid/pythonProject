@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <head>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css" type="text/css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+</head>
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-primary" class="navbarStyle" >
+        <p>Welcom to the Excesize 1</p>
+        <div class="buttons" style="margin-top: -1%;">
+            <a href="/">
+                <button class="btn btn-secondary"> map view</button>
+            </a>
+            <a href="/listView">
+                <button class="btn btn-secondary"> list view</button>
+            </a>
+        </div>
+    </nav>
+
+
+    <div class="formDiv" >
+        <form action="/insertEvent" method="POST" class="formStyleIn">
+            <input type="text" name="eventName" id="eventName" placeholder="eventName" class="inputFieldStyle" >
+            <select name="elements" id="elements" class="inputFieldStyle">
+            {% for eventType in data %}
+                <option value='{{eventType["id"]}}'>{{eventType["type"]}}</option>
+             {% endfor %}
+            </select>
+            <input type="text" name="description" id="description" placeholder="description" class="inputFieldStyle">
+            <input type="number" step=any name="cordX" id="cordX" placeholder="cordX" class="inputFieldStyle">
+            <input type="number" step=any name="cordY" id="cordY" placeholder="cordY" class="inputFieldStyle">
+            <input class="btn btn-success" type="submit" value="add" style="width: 5vw;" class="inputFieldStyle">
+        </form>
+    </div>
+
+<script>
+    var cordX = document.getElementById("cordX");
+    var cordY = document.getElementById("cordY");
+    cordX.value = localStorage.getItem("x");
+    cordY.value = localStorage.getItem("y");
+</script>
+
+</body>
+</html>
