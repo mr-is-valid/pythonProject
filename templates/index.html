@@ -272,12 +272,29 @@ for(let i=0; i <myRows.length;i++){
 
 //create the map
 mapboxgl.accessToken='pk.eyJ1IjoibXJpc3ZhbGlkIiwiYSI6ImNrZXY3bXFtcjB4MjMycXA3a3Znc3RkaHIifQ.Fa6Crua7ws6ssDYg56E12w';
-var map = new mapboxgl.Map({
-container: 'map',
-style: 'mapbox://styles/mapbox/streets-v11',
-center: [77.2901, 38.38144],
-zoom: 7
-});
+var gotoX = null;
+var gotoY = null;
+
+if(localStorage.getItem("gotoX"))
+    gotoX = localStorage.getItem("gotoX");
+if(localStorage.getItem("gotoY"))
+    gotoY = localStorage.getItem("gotoY");
+
+if(gotoX != null && gotoY !=null){
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [gotoX, gotoY],
+        zoom: 7
+    });
+}else {
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [77.2901, 38.38144],
+        zoom: 7
+    });
+}
 
 
 
@@ -321,65 +338,60 @@ var elDetailes = document.createElement('div');
 elDetailes.id = 'popup';
 
 new mapboxgl.Marker(elDetailes)
-.setLngLat(marker.geometry.coordinates)
-.setPopup(popup)
-.addTo(map);
+	.setLngLat(marker.geometry.coordinates)
+	.setPopup(popup)
+	.addTo(map);
 
 new mapboxgl.Marker(el)
-.setLngLat(marker.geometry.coordinates)
-.setPopup(popup)
-.addTo(map);
+	.setLngLat(marker.geometry.coordinates)
+	.setPopup(popup)
+	.addTo(map);
 });
 
 
 
 //the api engine search of mapbox
 var customData = {
-'features': [
-{
-'type': 'Feature',
-'properties': {
-'title': 'Columbus Park',
-'description':
-"A large park in Chicago's Austin neighborhood"
-},
-'geometry': {
-'coordinates': [-87.769775, 41.873683],
-'type': 'Point'
-	}
-}
-],
-'type': 'FeatureCollection'
+		'features': [
+			{
+			'type': 'Feature',
+				'properties': {
+				'title': 'Columbus Park',
+				'description':
+				"A large park in Chicago's Austin neighborhood"
+				},
+			'geometry': {
+				'coordinates': [-87.769775, 41.873683],
+				'type': 'Point'
+				}
+			}
+		],
+	'type': 'FeatureCollection'
 };
 
 
 function forwardGeocoder(query) {
-var matchingFeatures = [];
-for (var i = 0; i < customData.features.length; i++) {
-var feature = customData.features[i];
-if (
-feature.properties.title
-.toLowerCase()
-.search(query.toLowerCase()) !== -1
-) {
-
-feature['place_name'] = '?? ' + feature.properties.title;
-feature['center'] = feature.geometry.coordinates;
-feature['place_type'] = ['park'];
-matchingFeatures.push(feature);
-}
-}
-return matchingFeatures;
+	var matchingFeatures = [];
+	for (var i = 0; i < customData.features.length; i++) {
+		var feature = customData.features[i];
+		if (feature.properties.title.toLowerCase().search(query.toLowerCase()) !== -1) {
+			feature['place_name'] = '?? ' + feature.properties.title;
+			feature['center'] = feature.geometry.coordinates;
+			feature['place_type'] = ['park'];
+			matchingFeatures.push(feature);
+		}
+	}
+	return matchingFeatures;
 }
 
 map.addControl(
-new MapboxGeocoder({
-accessToken: mapboxgl.accessToken,
-localGeocoder: forwardGeocoder,
-zoom: 14,
-placeholder: 'Enter search e.g. Lincoln Park',
-mapboxgl: mapboxgl
-})
+	new MapboxGeocoder({
+		accessToken: mapboxgl.accessToken,
+		localGeocoder: forwardGeocoder,
+		zoom: 14,
+		placeholder: 'Enter search e.g. Lincoln Park',
+		mapboxgl: mapboxgl
+	})
 );
 
 
@@ -388,8 +400,8 @@ map.addControl(
 	new mapboxgl.GeolocateControl({
 		positionOptions: {
 		enableHighAccuracy: true
-	},
-	trackUserLocation: true
+		},
+		trackUserLocation: true
 	})
 );
 

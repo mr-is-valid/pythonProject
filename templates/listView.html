@@ -45,17 +45,17 @@
             </a>
         </div>
 
-         <table class="table" border = 1 id="eventTable">
-         <thead>
+         <table class="table table-striped table-bordered table-hover" border = 1 id="eventTable">
+         <thead  class="thead-dark">
          <tr>
-             <th>name</th>
-             <th>type</th>
-             <th>description</th>
-             <th>cordX</th>
-             <th>cordY</th>
-             <th>date Create</th>
-             <th>time Create</th>
-             <th>options</th>
+             <th  scope="col">name</th>
+             <th  scope="col">type</th>
+             <th  scope="col">description</th>
+             <th  scope="col">cordX</th>
+             <th  scope="col">cordY</th>
+             <th  scope="col">date Create</th>
+             <th  scope="col">time Create</th>
+             <th  scope="col">options</th>
          </tr>
          </thead>
              <tbody>
@@ -72,9 +72,10 @@
                     <a href='/editEvent/{{event.id}}'>
                         <i class="material-icons">edit</i>
                     </a>
-                    <a href="/deleteEvent/{{event.id}}">
+                    <a href="/deleteEvent/{{event.id}}" style="color:red;">
                         <i class="material-icons">delete</i>
                     </a>
+                    <button class="btn btn-success" onclick='goToLocation({{event["cordX"]}},{{event["cordY"]}})'>go to</button>
                 </td>
             </tr>
          {% endfor %}
@@ -82,5 +83,12 @@
       </table>
     </div>
 </div>
+<script>
+    function goToLocation(x,y){
+      localStorage.setItem("gotoX",x);
+      localStorage.setItem("gotoY",y);
+      window.location.replace("http://localhost:5000/");
+    }
+</script>
 </body>
 </html>
