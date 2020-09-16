@@ -23,7 +23,9 @@
 
 <div class="wrraper">
     <nav class="navbar navbar-dark bg-primary" class="navbarStyle" >
-        <p>Welcom to the Excesize 1</p>
+        <a href="/">
+            <p>Welcom to the Excesize 1</p>
+        </a>
         <div class="buttons" style="margin-top: -1%;">
             <a href="/">
                 <button class="btn btn-secondary"> map view</button>
@@ -36,16 +38,17 @@
 
     <div class="tableView">
         <div class="addBtn">
-            <script>
-             localStorage.setItem("x",0);
-             localStorage.setItem("y",0);
-            </script>
+            <input type="text" name="searchFilter" id="searchFilter" placeholder="search" style="width:300px;">
+                <script>
+                     localStorage.setItem("x",0);
+                     localStorage.setItem("y",0);
+                </script>
             <a href="/addEvent">
                 <button class="btn btn-secondary">add event</button>
             </a>
         </div>
 
-         <table class="table table-striped table-bordered table-hover" border = 1 id="eventTable">
+         <table class="table table-striped table-bordered table-hover" id="myTable" border = 1 id="eventTable">
          <thead  class="thead-dark">
          <tr>
              <th  scope="col">name</th>
@@ -89,6 +92,15 @@
       localStorage.setItem("gotoY",y);
       window.location.replace("http://localhost:5000/");
     }
+
+     $(document).ready(function(){
+      $("#searchFilter").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
 </script>
 </body>
 </html>

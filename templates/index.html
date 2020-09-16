@@ -4,12 +4,13 @@
 <head>
 <meta charset="utf-8" />
 <title>Add a geocoder</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-    <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css" type="text/css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css" type="text/css" />
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
@@ -28,7 +29,9 @@
 
 <div class="wrraper">
     <nav class="navbar navbar-dark bg-primary" class="navbarStyle" >
-        <p>Welcom to the Excesize 1</p>
+        <a href="/">
+            <p>Welcom to the Excesize 1</p>
+        </a>
         <div class="buttons" style="margin-top: -1%;">
             <a href="/">
                 <button class="btn btn-secondary"> map view</button>
@@ -43,28 +46,49 @@
         <p style="color: black;">in order to add event on the map click on the right mouse button</p>
     </div>
     <div class="displayData">
-        <div id="map" style="width: 800px; height: 700px;"></div>
-        <div id="chart" style="width: 400px; height: 400px;"></div>
+        <div id="map" style="width: 800px; height: 700px;border-radius: 15px;"></div>
+        <div class="graphs">
+            <div id="pieChart" style="width: 350px; height: 350px;"></div>
+            <div id="barChart" style="width: 500px; height: 400px;"></div>
+        </div>
     </div>
 
 
     <div><!-- make those table to take the data from db when onload and presenr it on the map and graph-->
         <table class="table" border = 1 id="graphTable" style="visibility: hidden;">
-         <thead>
-         <tr>
-             <th>element</th>
-             <th>amount</th>
-         </tr>
-         </thead>
-             <tbody>
-         {% for item in satistices %}
-            <tr>
-                <td>{{item["element"]}}</td>
-                <td>{{item["amount"]}}</td>
-            </tr>
-         {% endfor %}
-             </tbody>
-      </table>
+             <thead>
+             <tr>
+                 <th>element</th>
+                 <th>amount</th>
+             </tr>
+             </thead>
+                 <tbody>
+             {% for item in satisticesPieChart %}
+                <tr>
+                    <td>{{item["element"]}}</td>
+                    <td>{{item["amount"]}}</td>
+                </tr>
+             {% endfor %}
+                 </tbody>
+        </table>
+
+
+        <table class="table" border = 1 id="barChartTable" style="visibility: hidden;">
+             <thead>
+             <tr>
+                 <th>dateCreate</th>
+                 <th>amount</th>
+             </tr>
+             </thead>
+                 <tbody>
+             {% for item in satisticesBarChart %}
+                <tr>
+                    <td>{{item["dateCreate"]}}</td>
+                    <td>{{item["amount"]}}</td>
+                </tr>
+             {% endfor %}
+                 </tbody>
+        </table>
 
          <table class="table" border = 1 id="eventTable" style="visibility: hidden;">
          <thead>
@@ -109,6 +133,7 @@ $.each($("#graphTable thead th"), function() {
     head[i++] = $(this).text();
 });
 
+//conver the table into pie chart
 $.each($("#graphTable tbody tr"), function() {
     var $row = $(this),
         rowObj = {};
@@ -128,8 +153,9 @@ for(let i=0; i <myRows.length;i++){
     chartSeries.push(parseInt(myRows[i].amount));
 }
 
-//create the graph
+//create the pie chart graph
     options  = {
+    colors : [ '#eb4034','#348ceb','#34eb6e'],
       series: chartSeries,
       labels: chartLabel,
       chart: {
@@ -213,8 +239,74 @@ for(let i=0; i <myRows.length;i++){
         }
       }
     }
-var chart = new ApexCharts(document.querySelector("#chart"), options);
+var chart = new ApexCharts(document.querySelector("#pieChart"), options);
 chart.render();
+
+
+
+
+
+
+
+
+//conver the table into pie chart
+var head = [], i = 0,myRows = [];
+$.each($("#barChartTable thead th"), function() {
+    head[i++] = $(this).text();
+});
+
+//conver the table into pie chart
+$.each($("#barChartTable tbody tr"), function() {
+    var $row = $(this),
+        rowObj = {};
+    i = 0;
+    $.each($("td", $row), function() {
+        var $col = $(this);
+        rowObj[head[i]] = $col.text();
+        i++;
+    })
+    myRows.push(rowObj);
+});
+
+var seriesData = []
+var chartCategories = []
+for(let i=0; i <myRows.length;i++){
+    seriesData.push(parseInt(myRows[i].amount));
+    chartCategories.push(myRows[i].dateCreate);
+}
+
+console.log(seriesData);
+console.log(chartCategories);
+
+//create the  bar chart graph
+        var options = {
+          series: [{
+          data: seriesData
+        }],
+          chart: {
+          type: 'bar',
+          height: 350
+        },
+        plotOptions: {
+          bar: {
+            horizontal: false,
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        xaxis: {
+          categories: chartCategories
+        }
+    };
+
+var chart = new ApexCharts(document.querySelector("#barChart"), options);
+chart.render();
+
+
+
+
+
 
 
 
@@ -280,7 +372,7 @@ if(localStorage.getItem("gotoX"))
 if(localStorage.getItem("gotoY"))
     gotoY = localStorage.getItem("gotoY");
 
-if(gotoX != null && gotoY !=null){
+if(gotoX != null || gotoY !=null){
     var map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v11',

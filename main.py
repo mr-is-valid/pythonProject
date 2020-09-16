@@ -130,14 +130,18 @@ def index():
     con.row_factory = sqlite3.Row
     pointer_to_db = con.cursor()
     pointer_to_db.execute("select Events.typeID,Elements.type as element, COUNT(*) as amount from Events INNER JOIN Elements ON Events.typeID = Elements.id GROUP BY typeID;")
-    satistices = pointer_to_db.fetchall()
-    # for row in satistices:
+    satisticesPieChart = pointer_to_db.fetchall()
+    # for row in satisticesPieChart:
     #     print(f"{row['element']}, {row['amount']}.")
+    pointer_to_db.execute("select dateCreate, COUNT(*) as amount from Events INNER JOIN Elements ON Events.typeID = Elements.id GROUP BY dateCreate;")
+    satisticesBarChart = pointer_to_db.fetchall()
+    # for row in satisticesBarChart:
+    #     print(f"{row['dateCreate']}, {row['amount']}.")
     pointer_to_db.execute("select * from Events INNER JOIN Elements ON Events.typeID = Elements.id;")
     data = pointer_to_db.fetchall()
     # for row in data:
     #     print(f"{row['name']}, {row['type']}.")
-    return render_template('index.html', data=data, satistices=satistices)
+    return render_template('index.html', data=data, satisticesPieChart=satisticesPieChart,satisticesBarChart=satisticesBarChart)
 
 if __name__ == "__main__":
     app.run()
